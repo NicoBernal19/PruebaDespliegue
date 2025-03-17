@@ -2,6 +2,7 @@ import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
 import EnemyManager from '../classes/EnemyManager.js';
+import Decorations from '../classes/Decorations.js';
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -15,6 +16,10 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('base', 'assets/castilloFondo.png');
         this.load.image('tower', 'assets/torre.png');
         this.load.image('enemy', 'assets/monster.png');
+        this.load.image('water', 'assets/water.jpg');
+        this.load.image('tree', 'assets/tree.png'); // Imagen de un árbol
+        this.load.image('rock', 'assets/rock.png'); // Imagen de una roca
+        this.load.image('bush', 'assets/bush.png'); // Imagen de un arbusto
     }
 
     create() {
@@ -28,6 +33,19 @@ export default class GameScene extends Phaser.Scene {
         // Crear el sistema de enemigos
         this.enemyManager = new EnemyManager(this, this.map);
         this.enemyManager.spawnEnemies()
+
+        // Crear el sistema de decoraciones
+        this.decorations = new Decorations(this, this.map);
+
+        // Añadir elementos decorativos
+        this.decorations.addTree(2, 2);
+        this.decorations.addTree(10, 6);
+        this.decorations.addTree(3, 15);
+        this.decorations.addRock(5, 5);
+        this.decorations.addRock(5, 6);
+        this.decorations.addRock(6, 5);
+        this.decorations.addRock(7, 5);
+        this.decorations.addBush(7, 19);
 
         // Hacer las casillas de grass interactivas
         for (let row = 0; row < this.map.map.length; row++) {
