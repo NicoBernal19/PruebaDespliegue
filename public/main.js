@@ -10,3 +10,4 @@ const config = {
 
 // Crear una instancia del juego
 const game = new Phaser.Game(config);
+

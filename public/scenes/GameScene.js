@@ -1,3 +1,4 @@
+import { colocarTorre, colocarTorreREST } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
