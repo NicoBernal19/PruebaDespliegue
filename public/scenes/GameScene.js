@@ -1,4 +1,4 @@
-import { colocarTorre, colocarTorreREST } from '../services/socketService.js';
+import { colocarTorre, onTorreColocada, onTorresActualizadas } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
@@ -59,10 +59,23 @@ export default class GameScene extends Phaser.Scene {
 
                     tile.on('pointerdown', () => {
                         this.tower.placeTower(col, row);
+                        colocarTorre(col, row, 'tower');
                     });
                 }
             }
         }
+        // Escuchar el evento para actualizar torres
+        onTorreColocada((data) => {
+            const { x, y, tipo } = data;
+            this.tower.placeTower(x, y); // Colocar la torre en la vista
+        });
+
+        // Escuchar el evento para recibir el estado inicial de las torres
+        onTorresActualizadas((torres) => {
+            torres.forEach(torre => {
+                this.tower.placeTower(torre.x, torre.y); // Colocar las torres existentes
+            });
+        });
     }
 
     update() {
