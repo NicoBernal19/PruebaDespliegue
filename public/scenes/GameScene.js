@@ -18,9 +18,10 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('tower', 'assets/torre.png');
         this.load.image('enemy', 'assets/monster.png');
         this.load.image('water', 'assets/water.jpg');
-        this.load.image('tree', 'assets/tree.png'); // Imagen de un árbol
-        this.load.image('rock', 'assets/rock.png'); // Imagen de una roca
-        this.load.image('bush', 'assets/bush.png'); // Imagen de un arbusto
+        this.load.image('tree', 'assets/tree.png');
+        this.load.image('rock', 'assets/rock.png');
+        this.load.image('bush', 'assets/bush.png');
+        this.load.image('projectile', 'assets/projectile.png');
     }
 
     create() {
@@ -59,7 +60,7 @@ export default class GameScene extends Phaser.Scene {
 
                     tile.on('pointerdown', () => {
                         this.tower.placeTower(col, row);
-                        colocarTorre(col, row, 'tower');
+                        colocarTorre(col, row, 'tower'); // Notificar al servidor
                     });
                 }
             }
@@ -81,5 +82,8 @@ export default class GameScene extends Phaser.Scene {
     update() {
         // Actualizar la posición de los monstruos
         this.enemyManager.update();
+
+        // Actualizar los proyectiles
+        this.tower.update();
     }
 }

@@ -20,3 +20,13 @@ export function onTorreColocada(callback) {
 export function onTorresActualizadas(callback) {
     socket.on('torres-actualizadas', callback);
 }
+
+// Función para disparar un proyectil
+export function dispararProyectil(x, y, targetId) {
+    socket.emit('disparar-proyectil', { x, y, targetId });
+}
+
+// Escuchar el evento para recibir disparos de otros jugadores
+export function onProyectilDisparado(callback) {
+    socket.on('proyectil-disparado', callback);
+}
