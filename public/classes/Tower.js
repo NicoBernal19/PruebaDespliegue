@@ -9,6 +9,7 @@ export default class Tower {
         this.projectiles = []; // Lista de proyectiles activos
         this.cooldown = 1000; // Tiempo de espera entre disparos (en ms)
         this.lastShot = 0;  // Tiempo del último disparo
+        this.towers = [];   // Lista de torres colocadas
     }
 
     // Método para colocar una torre
@@ -26,6 +27,12 @@ export default class Tower {
             // Marcar la casilla como ocupada
             this.map.setTileValue(row, col, 3);
 
+            // Agregar la torre a la lista
+            this.towers.push({
+                sprite: tower,
+                lastShot: 0 // Tiempo del último disparo
+            });
+
             // Iniciar el sistema de disparo para esta torre
             this.scene.time.addEvent({
                 delay: 100, // Verificar cada 100 ms
@@ -38,6 +45,7 @@ export default class Tower {
     // Método para actualizar el estado de la torre
     updateTower(tower) {
         const now = this.scene.time.now;
+        const towerData = this.towers.find(t => t.sprite === tower);
 
         // Verificar si la torre puede disparar
         if (now - this.lastShot < this.cooldown) return;
@@ -60,7 +68,7 @@ export default class Tower {
             dispararProyectil(tower.x, tower.y, target.sprite.texture.key);
 
             // Actualizar el tiempo del último disparo
-            this.lastShot = now;
+            towerData.lastShot = now;
         }
     }
 

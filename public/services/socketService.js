@@ -30,3 +30,11 @@ export function dispararProyectil(x, y, targetId) {
 export function onProyectilDisparado(callback) {
     socket.on('proyectil-disparado', callback);
 }
+
+export function onNuevoEnemigo(callback) {
+    socket.on('nuevo-enemigo', callback);
+}
+
+export function onEnemigoEliminado(callback) {
+    socket.on('enemigo-eliminado', callback);
+}

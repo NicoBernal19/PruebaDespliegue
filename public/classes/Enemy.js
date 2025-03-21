@@ -16,8 +16,6 @@ export default class Enemy {
         this.sprite.setDisplaySize(this.scene.map.tileSize, this.scene.map.tileSize);
     }
 
-
-
     // Método para mover al monstruo
     update() {
         if (this.currentPoint < this.path.length - 1) {

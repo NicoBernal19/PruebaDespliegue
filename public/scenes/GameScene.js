@@ -1,4 +1,4 @@
-import { colocarTorre, onTorreColocada, onTorresActualizadas } from '../services/socketService.js';
+import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
@@ -34,7 +34,6 @@ export default class GameScene extends Phaser.Scene {
 
         // Crear el sistema de enemigos
         this.enemyManager = new EnemyManager(this, this.map);
-        this.enemyManager.spawnEnemies()
 
         // Crear el sistema de decoraciones
         this.decorations = new Decorations(this, this.map);
@@ -76,6 +75,16 @@ export default class GameScene extends Phaser.Scene {
             torres.forEach(torre => {
                 this.tower.placeTower(torre.x, torre.y); // Colocar las torres existentes
             });
+        });
+
+        // Escuchar el evento para nuevos enemigos
+        onNuevoEnemigo((enemigo) => {
+            this.enemyManager.addEnemy(enemigo);
+        });
+
+        // Escuchar el evento para enemigos eliminados
+        onEnemigoEliminado((enemigoId) => {
+            this.enemyManager.removeEnemy(enemigoId);
         });
     }
 
