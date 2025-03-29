@@ -1,4 +1,4 @@
-import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado } from '../services/socketService.js';
+import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onOleadaCompletada } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
@@ -15,7 +15,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('grass', 'assets/grass.jpg');
         this.load.image('path', 'assets/path.jpg');
         this.load.image('base', 'assets/castilloFondo.png');
-        this.load.image('tower', 'assets/torre.png');
+        this.load.image('tower', 'assets/tower.png');
         this.load.image('enemy', 'assets/monster.png');
         this.load.image('water', 'assets/water.jpg');
         this.load.image('tree', 'assets/tree.png');
@@ -85,6 +85,25 @@ export default class GameScene extends Phaser.Scene {
         // Escuchar el evento para enemigos eliminados
         onEnemigoEliminado((enemigoId) => {
             this.enemyManager.removeEnemy(enemigoId);
+        });
+
+        // Texto para mostrar la oleada actual
+        this.oleadaText = this.add.text(20, 20, 'Oleada: 0', {
+            fontSize: '24px',
+            fill: '#ffffff',
+            backgroundColor: '#000000'
+        }).setScrollFactor(0);
+
+        // Escuchar actualizaciones de oleada
+        onNuevaOleada((oleada) => {
+            console.log("Nueva oleada recibida:", oleada);
+            this.enemyManager.oleadaActual = oleada;
+            this.enemyManager.oleadaEnCurso = true;
+
+            // Actualizar UI si es necesario
+            if (this.oleadaText) {
+                this.oleadaText.setText(`Oleada: ${oleada}`);
+            }
         });
     }
 

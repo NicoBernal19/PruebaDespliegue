@@ -38,3 +38,13 @@ export function onNuevoEnemigo(callback) {
 export function onEnemigoEliminado(callback) {
     socket.on('enemigo-eliminado', callback);
 }
+
+// Escuchar evento de nueva oleada
+export function onNuevaOleada(callback) {
+    socket.on('nueva-oleada', callback);
+}
+
+// Escuchar evento de oleada completada
+export function onOleadaCompletada(callback) {
+    socket.on('oleada-completada', callback);
+}

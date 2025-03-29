@@ -5,9 +5,9 @@ export default class Tower {
     constructor(scene, map) {
         this.scene = scene; // Referencia a la escena de Phaser
         this.map = map;     // Referencia al mapa
-        this.range = 150;  // Rango de ataque de la torre
+        this.range = 100;  // Rango de ataque de la torre
         this.projectiles = []; // Lista de proyectiles activos
-        this.cooldown = 1000; // Tiempo de espera entre disparos (en ms)
+        this.cooldown = 5000; // Tiempo de espera entre disparos (en ms)
         this.lastShot = 0;  // Tiempo del último disparo
         this.towers = [];   // Lista de torres colocadas
     }
@@ -15,7 +15,17 @@ export default class Tower {
     // Método para colocar una torre
     placeTower(col, row) {
         if (this.map.getTileValue(row, col) === 1) {
-            // Colocar la torre
+            // Primero crear la base de pasto (si no existe ya)
+            const grass = this.scene.add.image(
+                col * this.map.tileSize + this.map.tileSize / 2,
+                row * this.map.tileSize + this.map.tileSize / 2,
+                'grass'
+            )
+                .setOrigin(0.5, 0.5)
+                .setDisplaySize(this.map.tileSize, this.map.tileSize)
+                .setAlpha(0.8); // Hacer el pasto un poco transparente
+
+            // Luego crear la torre encima
             const tower = this.scene.add.image(
                 col * this.map.tileSize + this.map.tileSize / 2,
                 row * this.map.tileSize + this.map.tileSize / 2,
@@ -30,12 +40,13 @@ export default class Tower {
             // Agregar la torre a la lista
             this.towers.push({
                 sprite: tower,
-                lastShot: 0 // Tiempo del último disparo
+                base: grass, // Guardar referencia a la base de pasto
+                lastShot: 0
             });
 
             // Iniciar el sistema de disparo para esta torre
             this.scene.time.addEvent({
-                delay: 100, // Verificar cada 100 ms
+                delay: 500, // Verificar cada 100 ms
                 callback: () => this.updateTower(tower),
                 loop: true
             });
