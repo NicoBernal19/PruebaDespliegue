@@ -1,4 +1,4 @@
-import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onOleadaCompletada } from '../services/socketService.js';
+import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onEnemigosRestantes, onTemporizadorOleada } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
@@ -104,6 +104,54 @@ export default class GameScene extends Phaser.Scene {
             if (this.oleadaText) {
                 this.oleadaText.setText(`Oleada: ${oleada}`);
             }
+
+            // Contador de enemigos restantes
+            this.enemigosText = this.add.text(20, 50, 'Enemigos: 0', {
+                fontSize: '24px',
+                fill: '#ffffff',
+                backgroundColor: '#000000'
+            }).setScrollFactor(0);
+
+            // Temporizador entre oleadas
+            this.temporizadorText = this.add.text(20, 80, 'Siguiente oleada: -', {
+                fontSize: '24px',
+                fill: '#ffff00',
+                backgroundColor: '#000000'
+            }).setScrollFactor(0);
+
+            // Escuchar eventos del servidor
+            onNuevaOleada((oleada) => {
+                this.oleadaActual = oleada;
+                this.oleadaText.setText(`Oleada: ${oleada}`);
+
+                // Mostrar anuncio de oleada
+                const anuncio = this.add.text(
+                    this.cameras.main.width / 2,
+                    this.cameras.main.height / 2,
+                    `¡Oleada ${oleada}!`,
+                    { fontSize: '48px', fill: '#ff0000' }
+                ).setOrigin(0.5);
+
+                this.tweens.add({
+                    targets: anuncio,
+                    alpha: 0,
+                    duration: 3000,
+                    onComplete: () => anuncio.destroy()
+                });
+            });
+
+            onEnemigosRestantes((cantidad) => {
+                this.enemigosText.setText(`Enemigos: ${cantidad}`);
+            });
+
+            onTemporizadorOleada((segundos) => {
+                if (segundos > 0) {
+                    this.temporizadorText.setText(`Siguiente oleada: ${segundos}s`);
+                    this.temporizadorText.setVisible(true);
+                } else {
+                    this.temporizadorText.setVisible(false);
+                }
+            });
         });
     }
 

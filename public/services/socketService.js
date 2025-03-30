@@ -48,3 +48,11 @@ export function onNuevaOleada(callback) {
 export function onOleadaCompletada(callback) {
     socket.on('oleada-completada', callback);
 }
+
+export function onEnemigosRestantes(callback) {
+    socket.on('enemigos-restantes', callback);
+}
+
+export function onTemporizadorOleada(callback) {
+    socket.on('temporizador-oleada', callback);
+}
