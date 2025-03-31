@@ -1,7 +1,7 @@
-import { io } from 'socket.io-client';
+import {  } from 'socket.io-client';
 
 // Conectar al servidor de WebSockets
-const socket = io('http://localhost:4000', {
+const socket = ('http://localhost:4000', {
     withCredentials: true, // Envía credenciales (cookies, headers)
     transports: ['websocket', 'polling'] // Métodos de transporte
 });
