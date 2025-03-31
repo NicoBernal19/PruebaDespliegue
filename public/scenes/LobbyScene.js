@@ -140,13 +140,11 @@ export default class LobbyScene extends Phaser.Scene {
 
     createRoom() {
         console.log('Creando sala...');
-        // Aquí puedes implementar la lógica para crear una sala
-        this.scene.start('GameScene');
+        this.scene.start('RoomCreationScene');
     }
 
     joinRoom() {
         console.log('Uniéndose a sala...');
-        // Aquí puedes implementar la lógica para unirse a una sala
-        this.scene.start('GameScene');
+        this.scene.start('JoinRoomScene');
     }
 }
