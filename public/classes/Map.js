@@ -20,10 +20,43 @@ export default class Map {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
         ];
+        // Calcular el tamaño de las casillas basado en el ancho del dispositivo
+        this.calculateTileSize();
+
+        // Escuchar el evento de cambio de tamaño de pantalla
+        this.scene.scale.on('resize', this.handleResize, this);
+    }
+
+    // Método para calcular el tamaño de las casillas
+    calculateTileSize() {
+        const gameWidth = this.scene.scale.width;
+        const mapWidth = this.map[0].length; // Ancho del mapa en casillas
+
+        // Calcular el tamaño máximo que pueden tener las casillas para que el mapa quepa en pantalla
+        // Podemos restar un margen si es necesario (por ejemplo, 20px)
+        const margin = 20;
+        const maxTileSize = Math.floor((gameWidth - margin) / mapWidth);
+
+        // Establecer un tamaño mínimo para que las casillas no sean demasiado pequeñas
+        const minTileSize = 30;
+
+        // Usar el valor calculado o el mínimo, el que sea mayor
+        this.tileSize = Math.max(maxTileSize, minTileSize);
+    }
+
+    // Manejar el redimensionamiento de la pantalla
+    handleResize(gameSize) {
+        // Recalcular el tamaño de las casillas
+        this.calculateTileSize();
+
+        // Volver a crear el mapa con el nuevo tamaño
+        this.create();
     }
 
     // Método para crear el mapa
     create() {
+        // Limpiar el mapa existente si lo hay
+        this.clearMap();
         for (let row = 0; row < this.map.length; row++) {
             for (let col = 0; col < this.map[row].length; col++) {
                 let texture;
@@ -46,6 +79,18 @@ export default class Map {
                 this.scene.add.image(col * this.tileSize, row * this.tileSize, texture)
                     .setOrigin(0, 0)
                     .setDisplaySize(this.tileSize, this.tileSize);
+            }
+        }
+    }
+
+    // Método para limpiar el mapa existente
+    clearMap() {
+        // Eliminar todas las imágenes del mapa de la escena
+        const children = this.scene.children.getChildren();
+        for (let i = children.length - 1; i >= 0; i--) {
+            if (children[i].texture &&
+                ['path', 'grass', 'base', 'water'].includes(children[i].texture.key)) {
+                children[i].destroy();
             }
         }
     }

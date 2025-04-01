@@ -120,3 +120,17 @@ export function onTemporizadorOleada(callback) {
     socket.off('temporizador-oleada'); // Evitar duplicados
     socket.on('temporizador-oleada', callback);
 }
+
+// Función para gastar monedas
+export function gastarMonedas(cantidad) {
+    socket.emit('gastar-monedas', cantidad);
+}
+
+// Función para agregar monedas
+export function agregarMonedas(cantidad) {
+    socket.emit('agregar-monedas', cantidad);
+}
+
+export function onActualizarMonedas(callback) {
+    socket.on('actualizar-monedas', callback);
+}

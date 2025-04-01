@@ -50,7 +50,9 @@ export default class Tower {
                 callback: () => this.updateTower(tower),
                 loop: true
             });
+            return true;
         }
+        return false;
     }
 
     // Método para actualizar el estado de la torre

@@ -1,9 +1,10 @@
-import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onEnemigosRestantes, onTemporizadorOleada } from '../services/socketService.js';
+import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onEnemigosRestantes, onTemporizadorOleada, gastarMonedas, onActualizarMonedas } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
 import EnemyManager from '../classes/EnemyManager.js';
 import Decorations from '../classes/Decorations.js';
+import CurrencyManager from "../classes/CurrencyManager";
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -22,9 +23,12 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('rock', 'assets/rock.png');
         this.load.image('bush', 'assets/bush.png');
         this.load.image('projectile', 'assets/projectile.png');
+        this.load.image('coin', 'assets/coin.png')
     }
 
     create() {
+        this.currencyManager = new CurrencyManager(this, 100); // 100 monedas iniciales
+
         // Crear el mapa
         this.map = new Map(this);
         this.map.create();
@@ -58,12 +62,41 @@ export default class GameScene extends Phaser.Scene {
                         .setInteractive();
 
                     tile.on('pointerdown', () => {
-                        this.tower.placeTower(col, row);
-                        colocarTorre(col, row, 'tower'); // Notificar al servidor
+                        const towerCost = 20; // Costo de cada torre
+                        if (this.currencyManager.canAfford(towerCost)) {
+                            if (this.tower.placeTower(col, row)) {
+                                this.currencyManager.spend(towerCost);
+                                colocarTorre(col, row, 'tower'); // Notificar al servidor
+                                // Notificar al servidor del gasto
+                                gastarMonedas(towerCost);
+                            }
+                        } else {
+                            // Mostrar feedback de que no hay suficientes monedas
+                            const feedback = this.add.text(
+                                col * this.map.tileSize + this.map.tileSize / 2,
+                                row * this.map.tileSize - 20,
+                                '¡No hay suficientes monedas!',
+                                { fontSize: '16px', fill: '#ff0000' }
+                            ).setOrigin(0.5);
+
+                            this.tweens.add({
+                                targets: feedback,
+                                y: feedback.y - 30,
+                                alpha: 0,
+                                duration: 1000,
+                                onComplete: () => feedback.destroy()
+                            });
+                        }
                     });
                 }
             }
         }
+        // Escuchar actualizaciones de monedas desde el servidor
+        onActualizarMonedas((amount) => {
+            this.currencyManager.amount = amount;
+            this.currencyManager.updateUI();
+        });
+
         // Escuchar el evento para actualizar torres
         onTorreColocada((data) => {
             const { x, y, tipo } = data;
