@@ -48,8 +48,16 @@ io.on('connection', (socket) => {
 
     // Unirse a una sala
     socket.on('joinRoom', ({ roomCode }) => {
-        // Verificar si la sala existe...
-        // Verificar si la sala está llena...
+        // Verificación existente
+        if (!rooms[roomCode]) {
+            socket.emit('joinError', { message: 'La sala no existe' });
+            return;
+        }
+
+        if (rooms[roomCode].players.length >= 2) {
+            socket.emit('joinError', { message: 'La sala está llena' });
+            return;
+        }
 
         // Añadir jugador a la sala
         rooms[roomCode].players.push({ id: socket.id, ready: true });
@@ -60,7 +68,7 @@ io.on('connection', (socket) => {
         // Unir al jugador a la sala (socket.io)
         socket.join(roomCode);
 
-        // CAMBIO: Asegurar que ambos jugadores están marcados como listos
+        // Asegurar que ambos jugadores están marcados como listos
         rooms[roomCode].players.forEach(player => {
             player.ready = true;
         });
@@ -72,6 +80,16 @@ io.on('connection', (socket) => {
         });
 
         console.log(`Jugador unido a sala: ${roomCode}`);
+
+        // NUEVO: Si ahora hay 2 jugadores, iniciar el juego automáticamente después de un breve retraso
+        if (rooms[roomCode].players.length === 2) {
+            // Esperar un momento para que la interfaz se actualice en el cliente
+            setTimeout(() => {
+                rooms[roomCode].status = 'playing';
+                io.to(roomCode).emit('gameStarted', { roomCode });
+                console.log(`Juego iniciado automáticamente en sala: ${roomCode}`);
+            }, 3000); // 3 segundos de retraso
+        }
     });
 
     // Iniciar juego

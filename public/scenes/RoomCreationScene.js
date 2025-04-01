@@ -128,16 +128,6 @@ export default class RoomCreationScene extends Phaser.Scene {
 
         player2Container.add([player2Frame, player2Text, player2Image, player2Status]);
 
-        // Botón "Iniciar juego"
-        const startButtonEnabled = this.isJoining || false; // Habilitado si somos J2, deshabilitado si somos host y estamos solos
-        this.createButton(
-            width / 2,
-            height * 0.8,
-            'Iniciar Juego',
-            () => this.startGame(),
-            !startButtonEnabled // Desactivado inicialmente si somos host
-        );
-
         // Botón para volver
         this.createButton(
             width * 0.15,
@@ -177,8 +167,28 @@ export default class RoomCreationScene extends Phaser.Scene {
                         // Ocultar mensaje de espera
                         this.waitingText.setVisible(false);
 
-                        // Activar botón de inicio
-                        this.enableStartButton();
+                        // NUEVO: Iniciar el juego automáticamente después de un breve retraso
+                        this.time.delayedCall(1500, () => {
+                            // Mostrar mensaje de inicio automático
+                            const autoStartText = this.add.text(
+                                this.cameras.main.width / 2,
+                                this.cameras.main.height / 2,
+                                '¡Iniciando partida!',
+                                {
+                                    font: `bold ${Math.floor(30 * this.scaleRatio)}px Arial`,
+                                    fill: '#ffffff',
+                                    stroke: '#000000',
+                                    strokeThickness: 4,
+                                    backgroundColor: '#00000080',
+                                    padding: { x: 20, y: 10 }
+                                }
+                            ).setOrigin(0.5);
+
+                            // Iniciar el juego después de mostrar el mensaje
+                            this.time.delayedCall(1500, () => {
+                                this.startGame();
+                            });
+                        });
                     }
                 });
 
@@ -206,9 +216,6 @@ export default class RoomCreationScene extends Phaser.Scene {
                     // Mostrar mensaje de espera con texto actualizado
                     this.waitingText.setText('Esperando reconexión o nuevo jugador...');
                     this.waitingText.setVisible(true);
-
-                    // Desactivar botón de inicio
-                    this.disableStartButton();
 
                     // Después de 3 segundos, volver al estado de "Esperando..."
                     this.time.delayedCall(3000, () => {
@@ -249,9 +256,6 @@ export default class RoomCreationScene extends Phaser.Scene {
                 player1Image.setAlpha(0.5);
                 player1Status.setText('Desconectado');
                 player1Status.setFill('#ff0000');
-
-                // Desactivar botón de inicio
-                this.disableStartButton();
 
                 // Tiempo de espera antes de volver al lobby
                 this.time.delayedCall(5000, () => {
@@ -294,14 +298,6 @@ export default class RoomCreationScene extends Phaser.Scene {
             stroke: '#000000',
             strokeThickness: 2
         }).setOrigin(0.5);
-
-        // Guardar referencia para poder activar/desactivar
-        if (text === 'Iniciar Juego') {
-            this.startButtonGraphics = button;
-            this.startButtonText = textObj;
-            this.startButtonCallback = callback;
-            this.startButtonEnabled = !disabled;
-        }
 
         // Hacer interactivo solo si no está desactivado
         if (!disabled) {
@@ -382,51 +378,6 @@ export default class RoomCreationScene extends Phaser.Scene {
             messageBox.destroy();
             messageText.destroy();
         });
-    }
-
-    // Método para activar el botón de inicio
-    enableStartButton() {
-        if (this.startButtonGraphics && !this.startButtonEnabled) {
-            this.startButtonEnabled = true;
-
-            const width = this.cameras.main.width;
-            const height = this.cameras.main.height;
-
-            // Eliminar el botón desactivado
-            this.startButtonGraphics.destroy();
-            this.startButtonText.destroy();
-
-            // Recrear el botón como activo
-            this.createButton(
-                width / 2,
-                height * 0.8,
-                'Iniciar Juego',
-                () => this.startGame()
-            );
-        }
-    }
-
-    // Método para desactivar el botón de inicio
-    disableStartButton() {
-        if (this.startButtonGraphics && this.startButtonEnabled) {
-            this.startButtonEnabled = false;
-
-            const width = this.cameras.main.width;
-            const height = this.cameras.main.height;
-
-            // Eliminar el botón activado
-            this.startButtonGraphics.destroy();
-            this.startButtonText.destroy();
-
-            // Recrear el botón como desactivado
-            this.createButton(
-                width / 2,
-                height * 0.8,
-                'Iniciar Juego',
-                () => this.startGame(),
-                true
-            );
-        }
     }
 
     startGame() {
