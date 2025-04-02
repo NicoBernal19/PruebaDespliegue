@@ -121,6 +121,18 @@ export function onTemporizadorOleada(callback) {
     socket.on('temporizador-oleada', callback);
 }
 
+// Nuevo evento para sincronizar posiciones de enemigos
+export function onEnemyPositionUpdated(callback) {
+    socket.off('update-enemy-position'); // Evitar duplicados
+    socket.on('update-enemy-position', callback);
+}
+
+// Nuevo evento para cuando un enemigo llega a la base
+export function onEnemyReachedBase(callback) {
+    socket.off('enemigo-reached-base'); // Evitar duplicados
+    socket.on('enemigo-reached-base', callback);
+}
+
 // Función para gastar monedas
 export function gastarMonedas(cantidad) {
     socket.emit('gastar-monedas', cantidad);

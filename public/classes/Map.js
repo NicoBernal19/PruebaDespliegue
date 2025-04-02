@@ -5,18 +5,18 @@ export default class Map {
         this.map = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
             [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 1, 1, 1, 4, 4, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
         ];
@@ -159,70 +159,28 @@ export default class Map {
 
     // Método para generar la ruta de los enemigos
     createPath() {
+        // Debería generar exactamente los mismos puntos que en el servidor
+        // para que los enemigos se muevan correctamente por el camino
         const path = [];
-        const rows = this.map.length;
-        const cols = this.map[0].length;
+        const pathCoords = [
+            { row: 0, col: 12 },   // Entrada
+            { row: 2, col: 12 },
+            { row: 2, col: 10 },
+            { row: 4, col: 10 },
+            { row: 4, col: 8 },
+            { row: 8, col: 8 },
+            { row: 8, col: 16 },
+            { row: 11, col: 16 },
+            { row: 11, col: 20 },
+            { row: 13, col: 20 },
+            { row: 13, col: 23 },
+            { row: 15, col: 23 }   // Base
+        ];
 
-        // Encontrar el punto de inicio (primera casilla de tipo 0)
-        let startRow = -1;
-        let startCol = -1;
-        for (let row = 0; row < rows; row++) {
-            for (let col = 0; col < cols; col++) {
-                if (this.map[row][col] === 0) {
-                    startRow = row;
-                    startCol = col;
-                    break;
-                }
-            }
-            if (startRow !== -1) break;
-        }
-
-        // Si no se encontró un punto de inicio, retornar una ruta vacía
-        if (startRow === -1 || startCol === -1) return path;
-
-        // Seguir el camino desde el punto de inicio
-        let currentRow = startRow;
-        let currentCol = startCol;
-        let previousRow = -1;
-        let previousCol = -1;
-
-        while (true) {
-            // Obtener posición en pantalla para este punto
-            const position = this.getTilePosition(currentRow, currentCol);
-
-            // Agregar la posición a la ruta
+        // Convertir a coordenadas de pantalla usando el método de obtener posición
+        for (const coord of pathCoords) {
+            const position = this.getTilePosition(coord.row, coord.col);
             path.push({ x: position.x, y: position.y });
-
-            // Verificar si llegamos a la base (casilla de tipo 2)
-            if (this.map[currentRow][currentCol] === 2) break;
-
-            // Buscar la siguiente casilla en el camino
-            let nextRow = -1;
-            let nextCol = -1;
-
-            // Verificar las casillas adyacentes (arriba, abajo, izquierda, derecha)
-            if (currentRow > 0 && this.map[currentRow - 1][currentCol] === 0 && (currentRow - 1 !== previousRow || currentCol !== previousCol)) {
-                nextRow = currentRow - 1;
-                nextCol = currentCol;
-            } else if (currentRow < rows - 1 && this.map[currentRow + 1][currentCol] === 0 && (currentRow + 1 !== previousRow || currentCol !== previousCol)) {
-                nextRow = currentRow + 1;
-                nextCol = currentCol;
-            } else if (currentCol > 0 && this.map[currentRow][currentCol - 1] === 0 && (currentRow !== previousRow || currentCol - 1 !== previousCol)) {
-                nextRow = currentRow;
-                nextCol = currentCol - 1;
-            } else if (currentCol < cols - 1 && this.map[currentRow][currentCol + 1] === 0 && (currentRow !== previousRow || currentCol + 1 !== previousCol)) {
-                nextRow = currentRow;
-                nextCol = currentCol + 1;
-            }
-
-            // Si no se encontró una siguiente casilla, salir del bucle
-            if (nextRow === -1 || nextCol === -1) break;
-
-            // Actualizar la posición actual y la anterior
-            previousRow = currentRow;
-            previousCol = currentCol;
-            currentRow = nextRow;
-            currentCol = nextCol;
         }
 
         return path;

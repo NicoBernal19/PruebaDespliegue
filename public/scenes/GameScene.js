@@ -17,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image('path', 'assets/camino.png');
         this.load.image('base', 'assets/puerta.jpeg');
         this.load.image('tower', 'assets/tower.png');
-        this.load.image('enemy', 'assets/monster.png');
+        this.load.image('enemy', 'assets/miniogro.gif');
         this.load.image('water', 'assets/agua.jpg');
         this.load.image('tree', 'assets/arbol.png');
         this.load.image('rock', 'assets/roca.png');
@@ -125,6 +125,7 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addBush(12, 4);
         this.decorations.addBush(13, 2);
         this.decorations.addBush(13, 3);
+        //Guardias
         this.decorations.addGuard(15,22);
         this.decorations.addGuard2(15,24);
 
