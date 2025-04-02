@@ -49,6 +49,11 @@ export function startGame(roomCode) {
     socket.emit('startGame', { roomCode });
 }
 
+// Nueva función para abandonar una sala
+export function leaveRoom(roomCode) {
+    socket.emit('leaveRoom', { roomCode });
+}
+
 export function onPlayerJoined(callback) {
     // Eliminar listener previo para evitar duplicados
     socket.off('playerJoined');
@@ -144,5 +149,6 @@ export function agregarMonedas(cantidad) {
 }
 
 export function onActualizarMonedas(callback) {
+    socket.off('actualizar-monedas'); // Evitar duplicados
     socket.on('actualizar-monedas', callback);
 }

@@ -247,6 +247,38 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Nuevo evento para abandonar sala explícitamente
+    socket.on('leaveRoom', ({ roomCode }) => {
+        if (roomCode && rooms[roomCode]) {
+            const playerIndex = rooms[roomCode].players.findIndex(p => p.id === socket.id);
+
+            if (playerIndex !== -1) {
+                // Eliminar al jugador de la sala
+                rooms[roomCode].players.splice(playerIndex, 1);
+
+                // Notificar a todos en la sala que el jugador se fue
+                io.to(roomCode).emit('playerLeft', {
+                    playerId: socket.id,
+                    playerIndex: playerIndex
+                });
+
+                // Hacer que el socket abandone la sala
+                socket.leave(roomCode);
+
+                // Eliminar la referencia de la sala en el socket
+                socket.roomCode = null;
+
+                console.log(`Jugador ${socket.id} abandonó voluntariamente la sala ${roomCode}`);
+
+                // Si la sala está vacía, eliminarla
+                if (rooms[roomCode].players.length === 0) {
+                    delete rooms[roomCode];
+                    console.log(`Sala eliminada: ${roomCode}`);
+                }
+            }
+        }
+    });
+
     // Eventos del juego (solo procesar si están en una sala)
     socket.on('colocar-torre', (data) => {
         const roomCode = socket.roomCode;

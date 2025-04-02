@@ -407,8 +407,29 @@ export default class GameScene extends Phaser.Scene {
         const hitArea = new Phaser.Geom.Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
         button.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
             .on('pointerdown', () => {
-                this.scene.start('MenuScene');
+                // Limpiar estado del juego y abandonar la sala
+                this.cleanupGameAndLeaveRoom();
             });
+    }
+
+    cleanupGameAndLeaveRoom() {
+        // Crear un evento de socket para abandonar la sala
+        if (socket) {
+            // Enviar evento para abandonar la sala explícitamente
+            socket.emit('leaveRoom', { roomCode: this.roomCode });
+        }
+
+        // Detener todos los eventos y listeners activos
+        this.events.removeAllListeners();
+
+        // Limpiar cualquier intervalo o timeout que pueda estar ejecutándose
+        this.time.removeAllEvents();
+
+        // Detener cualquier sonido en reproducción
+        this.sound.stopAll();
+
+        // Iniciar la escena del menú
+        this.scene.start('MenuScene');
     }
 
     update() {
