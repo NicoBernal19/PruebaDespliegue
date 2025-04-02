@@ -43,9 +43,13 @@ export default class EnemyManager {
 
         // Escuchar cuando un enemigo llega a la base
         onEnemyReachedBase((enemyId) => {
-            // Dañar el castillo antes de eliminar el enemigo
-            if (this.scene.damageCastle) {
-                this.scene.damageCastle(2); // Restar 2 de vida
+            const enemy = this.enemies.find(e => e.id === enemyId);
+            // Solo dañar el castillo si el enemigo existe y está activo
+            if (enemy && enemy.sprite.active) {
+                // Dañar el castillo antes de eliminar el enemigo
+                if (this.scene.damageCastle) {
+                    this.scene.damageCastle(2); // Restar 2 de vida
+                }
             }
             this.removeEnemy(enemyId);
         });
@@ -73,8 +77,19 @@ export default class EnemyManager {
     verificarFinOleada() {
         const enemigosActivos = this.enemies.filter(e => e.sprite.active);
         if (enemigosActivos.length === 0 && this.oleadaEnCurso) {
-            this.scene.events.emit('oleada-completada');
             this.oleadaEnCurso = false;
+
+            // Emitir evento de oleada completada
+            this.scene.events.emit('oleada-completada', this.oleadaActual);
+
+            // Si era la última oleada (3), mostrar victoria después de un breve retraso
+            if (this.oleadaActual >= 5) {
+                this.scene.time.delayedCall(1500, () => {
+                    if (this.scene.gameOver) {
+                        this.scene.gameOver(true); // true para victoria
+                    }
+                });
+            }
         }
     }
 

@@ -31,8 +31,23 @@ export default class Projectile {
             this.sprite.y += (dy / distance) * this.speed;
         } else {
             // El proyectil alcanzó al objetivo
-            const enemyDied = this.target.takeDamage(this.damage); // Aplicar daño
-            this.destroy(); // Destruir el proyectil
+            const enemyDied = this.target.takeDamage(this.damage);
+
+            // Si el enemigo murió
+            if (enemyDied) {
+                // Dar recompensa de monedas
+                if (this.scene.agregarMonedas) {
+                    this.scene.agregarMonedas(30);
+                }
+
+                // Notificar al servidor que el enemigo ha sido eliminado
+                // Esto evitará que el servidor envíe un evento onEnemyReachedBase
+                if (this.scene.eliminarEnemigo) {
+                    this.scene.eliminarEnemigo(this.target.id);
+                }
+            }
+
+            this.destroy();
         }
     }
 

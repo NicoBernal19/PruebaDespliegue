@@ -1,4 +1,4 @@
-import { colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onEnemigosRestantes, onTemporizadorOleada, gastarMonedas, onActualizarMonedas } from '../services/socketService.js';
+import {colocarTorre, onTorreColocada, onTorresActualizadas, onNuevoEnemigo, onEnemigoEliminado, onNuevaOleada, onEnemigosRestantes, onTemporizadorOleada, gastarMonedas, agregarMonedas, onActualizarMonedas } from '../services/socketService.js';
 import Map from '../classes/Map.js';
 import Tower from '../classes/Tower.js';
 import Enemy from '../classes/Enemy.js';
@@ -33,6 +33,7 @@ export default class GameScene extends Phaser.Scene {
         // Hacer que las funciones de socket sean accesibles desde otras clases
         this.colocarTorre = colocarTorre;
         this.gastarMonedas = gastarMonedas;
+        this.agregarMonedas = agregarMonedas;
 
         // Hacer accesible la función para eliminar enemigos
         this.eliminarEnemigo = (enemigoId) => {
@@ -140,6 +141,10 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addTree(13, 27);
         this.decorations.addTree(13, 28);
 
+        this.decorations.addTree(9, 13);
+        this.decorations.addTree(9, 14);
+        this.decorations.addTree(7, 15);
+
         // Añadir grupos de casas
         // Grupo 1 - cerca del centro
         this.decorations.addBush(4, 16);
@@ -172,6 +177,36 @@ export default class GameScene extends Phaser.Scene {
         // Añadir guardias
         this.decorations.addGuard(15, 22);
         this.decorations.addGuard2(15, 24);
+
+        //Añadir rocas
+        this.decorations.addRock(0,11)
+        this.decorations.addRock(0,13)
+        this.decorations.addRock(3,12)
+        this.decorations.addRock(3,11)
+        this.decorations.addRock(4,11)
+        this.decorations.addRock(4,10)
+        this.decorations.addRock(2,8)
+        this.decorations.addRock(1,8)
+        this.decorations.addRock(1,9)
+        this.decorations.addRock(2,7)
+        this.decorations.addRock(3,7)
+
+        this.decorations.addRock(14,22)
+        this.decorations.addRock(14,24)
+        this.decorations.addRock(11,23)
+        this.decorations.addRock(11,22)
+        this.decorations.addRock(10,22)
+        this.decorations.addRock(10,21)
+        this.decorations.addRock(10,20)
+
+        this.decorations.addRock(13,20)
+        this.decorations.addRock(13,19)
+        this.decorations.addRock(12,19)
+
+        this.decorations.addRock(10,17)
+        this.decorations.addRock(12,15)
+        this.decorations.addRock(11,15)
+        this.decorations.addRock(10,15)
 
         // Escuchar actualizaciones de monedas desde el servidor
         onActualizarMonedas((amount) => {
@@ -273,6 +308,19 @@ export default class GameScene extends Phaser.Scene {
                 } else {
                     this.temporizadorText.setVisible(false);
                 }
+            }
+        });
+
+        // Escuchar cuando se completa una oleada
+        this.events.on('oleada-completada', (oleada) => {
+            console.log(`Oleada ${oleada} completada`);
+
+            // Verificar si era la última oleada
+            if (oleada >= 5) {
+                // Esperar un momento antes de mostrar la victoria
+                this.time.delayedCall(1500, () => {
+                    this.gameOver(true); // true para victoria
+                });
             }
         });
     }
