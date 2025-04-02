@@ -83,7 +83,7 @@ export default class EnemyManager {
             this.scene.events.emit('oleada-completada', this.oleadaActual);
 
             // Si era la última oleada (3), mostrar victoria después de un breve retraso
-            if (this.oleadaActual >= 5) {
+            if (this.oleadaActual >= 3) {
                 this.scene.time.delayedCall(1500, () => {
                     if (this.scene.gameOver) {
                         this.scene.gameOver(true); // true para victoria

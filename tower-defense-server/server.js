@@ -27,7 +27,7 @@ const oleadasConfig = [
     { cantidad: 10, delay: 2000, espera: 10000 },
     { cantidad: 15, delay: 2000, espera: 15000 },
     { cantidad: 20, delay: 2000, espera: 20000 },
-    { cantidad: 30, delay: 2000, espera: 15000 },
+    { cantidad: 30, delay: 2000, espera: 15000 }
 ];
 
 // Función para inicializar el estado del juego para una sala
@@ -36,7 +36,7 @@ function initializeGameState() {
         torres: [],
         enemigos: [],
         monedas: 100,
-        oleadaActual: 0,
+        oleadaActual: 1,
         enemigosRestantes: 0,
         enOleada: false,
         primeraConexion: true
@@ -75,6 +75,7 @@ function iniciarOleada(io, roomCode, oleadaIndex) {
     const config = oleadasConfig[oleadaIndex];
     const gameState = rooms[roomCode].gameState;
 
+    // Asignar oleadaActual como oleadaIndex + 1 para que comience en 1
     gameState.oleadaActual = oleadaIndex + 1;
     gameState.enemigosRestantes = config.cantidad;
     gameState.enOleada = true;

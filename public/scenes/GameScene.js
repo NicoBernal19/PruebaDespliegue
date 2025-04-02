@@ -238,7 +238,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         // Texto para mostrar la oleada actual (fijar a la cámara con setScrollFactor)
-        this.oleadaText = this.add.text(20, 20, 'Oleada: 0', {
+        this.oleadaText = this.add.text(20, 20, 'Oleada: 1', {
             fontSize: '24px',
             fill: '#ffffff',
             backgroundColor: '#000000'
@@ -316,7 +316,7 @@ export default class GameScene extends Phaser.Scene {
             console.log(`Oleada ${oleada} completada`);
 
             // Verificar si era la última oleada
-            if (oleada >= 5) {
+            if (oleada >= 3) {
                 // Esperar un momento antes de mostrar la victoria
                 this.time.delayedCall(1500, () => {
                     this.gameOver(true); // true para victoria
