@@ -1,9 +1,10 @@
 export default class Enemy {
-    constructor(scene, path) {
+    constructor(scene, path, id) {
         this.scene = scene; // Referencia a la escena de Phaser
         this.path = path;   // Ruta que el monstruo debe seguir
         this.currentPoint = 0; // Índice del punto actual en la ruta
-        this.speed = 1;     // Velocidad del monstruo
+        this.speed = 1 * scene.map.scale; // Velocidad ajustada a la escala
+        this.id = id || Date.now(); // Identificador único
 
         // Crear el sprite del monstruo en el primer punto del camino
         this.sprite = this.scene.add.sprite(

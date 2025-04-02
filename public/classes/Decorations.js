@@ -6,9 +6,12 @@ export default class Decorations {
 
     // Método para agregar un árbol
     addTree(row, col) {
+        // Obtener la posición en la pantalla para esta casilla
+        const position = this.map.getTilePosition(row, col);
+
         const tree = this.scene.add.image(
-            col * this.map.tileSize + this.map.tileSize / 2,
-            row * this.map.tileSize + this.map.tileSize / 2,
+            position.x,
+            position.y,
             'tree'
         );
         tree.setOrigin(0.5, 0.5);
@@ -20,9 +23,12 @@ export default class Decorations {
 
     // Método para agregar una roca
     addRock(row, col) {
+        // Obtener la posición en la pantalla para esta casilla
+        const position = this.map.getTilePosition(row, col);
+
         const rock = this.scene.add.image(
-            col * this.map.tileSize + this.map.tileSize / 2,
-            row * this.map.tileSize + this.map.tileSize / 2,
+            position.x,
+            position.y,
             'rock'
         );
         rock.setOrigin(0.5, 0.5);
@@ -34,9 +40,12 @@ export default class Decorations {
 
     // Método para agregar un arbusto
     addBush(row, col) {
+        // Obtener la posición en la pantalla para esta casilla
+        const position = this.map.getTilePosition(row, col);
+
         const bush = this.scene.add.image(
-            col * this.map.tileSize + this.map.tileSize / 2,
-            row * this.map.tileSize + this.map.tileSize / 2,
+            position.x,
+            position.y,
             'bush'
         );
         bush.setOrigin(0.5, 0.5);

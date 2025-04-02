@@ -27,6 +27,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // Hacer que las funciones de socket sean accesibles desde otras clases
+        this.colocarTorre = colocarTorre;
+        this.gastarMonedas = gastarMonedas;
+
+        // Crear el gestor de monedas
         this.currencyManager = new CurrencyManager(this, 100); // 100 monedas iniciales
 
         // Crear el mapa
@@ -52,45 +57,6 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addRock(7, 5);
         this.decorations.addBush(7, 19);
 
-        // Hacer las casillas de grass interactivas
-        for (let row = 0; row < this.map.map.length; row++) {
-            for (let col = 0; col < this.map.map[row].length; col++) {
-                if (this.map.getTileValue(row, col) === 1) {
-                    const tile = this.add.image(col * this.map.tileSize, row * this.map.tileSize, 'grass')
-                        .setOrigin(0, 0)
-                        .setDisplaySize(this.map.tileSize, this.map.tileSize)
-                        .setInteractive();
-
-                    tile.on('pointerdown', () => {
-                        const towerCost = 20; // Costo de cada torre
-                        if (this.currencyManager.canAfford(towerCost)) {
-                            if (this.tower.placeTower(col, row)) {
-                                this.currencyManager.spend(towerCost);
-                                colocarTorre(col, row, 'tower'); // Notificar al servidor
-                                // Notificar al servidor del gasto
-                                gastarMonedas(towerCost);
-                            }
-                        } else {
-                            // Mostrar feedback de que no hay suficientes monedas
-                            const feedback = this.add.text(
-                                col * this.map.tileSize + this.map.tileSize / 2,
-                                row * this.map.tileSize - 20,
-                                '¡No hay suficientes monedas!',
-                                { fontSize: '16px', fill: '#ff0000' }
-                            ).setOrigin(0.5);
-
-                            this.tweens.add({
-                                targets: feedback,
-                                y: feedback.y - 30,
-                                alpha: 0,
-                                duration: 1000,
-                                onComplete: () => feedback.destroy()
-                            });
-                        }
-                    });
-                }
-            }
-        }
         // Escuchar actualizaciones de monedas desde el servidor
         onActualizarMonedas((amount) => {
             this.currencyManager.amount = amount;
@@ -120,7 +86,7 @@ export default class GameScene extends Phaser.Scene {
             this.enemyManager.removeEnemy(enemigoId);
         });
 
-        // Texto para mostrar la oleada actual
+        // Texto para mostrar la oleada actual (fijar a la cámara con setScrollFactor)
         this.oleadaText = this.add.text(20, 20, 'Oleada: 0', {
             fontSize: '24px',
             fill: '#ffffff',
@@ -138,53 +104,60 @@ export default class GameScene extends Phaser.Scene {
                 this.oleadaText.setText(`Oleada: ${oleada}`);
             }
 
-            // Contador de enemigos restantes
-            this.enemigosText = this.add.text(20, 50, 'Enemigos: 0', {
-                fontSize: '24px',
-                fill: '#ffffff',
-                backgroundColor: '#000000'
-            }).setScrollFactor(0);
+            // Contador de enemigos restantes (fijar a la cámara)
+            if (!this.enemigosText) {
+                this.enemigosText = this.add.text(20, 50, 'Enemigos: 0', {
+                    fontSize: '24px',
+                    fill: '#ffffff',
+                    backgroundColor: '#000000'
+                }).setScrollFactor(0);
+            }
 
-            // Temporizador entre oleadas
-            this.temporizadorText = this.add.text(20, 80, 'Siguiente oleada: -', {
-                fontSize: '24px',
-                fill: '#ffff00',
-                backgroundColor: '#000000'
-            }).setScrollFactor(0);
+            // Temporizador entre oleadas (fijar a la cámara)
+            if (!this.temporizadorText) {
+                this.temporizadorText = this.add.text(20, 80, 'Siguiente oleada: -', {
+                    fontSize: '24px',
+                    fill: '#ffff00',
+                    backgroundColor: '#000000'
+                }).setScrollFactor(0);
+            }
 
-            // Escuchar eventos del servidor
-            onNuevaOleada((oleada) => {
-                this.oleadaActual = oleada;
-                this.oleadaText.setText(`Oleada: ${oleada}`);
+            // Mostrar anuncio de oleada (en el centro de la pantalla)
+            const anuncio = this.add.text(
+                this.cameras.main.width / 2,
+                this.cameras.main.height / 2,
+                `¡Oleada ${oleada}!`,
+                { fontSize: '48px', fill: '#ff0000' }
+            ).setOrigin(0.5).setScrollFactor(0);
 
-                // Mostrar anuncio de oleada
-                const anuncio = this.add.text(
-                    this.cameras.main.width / 2,
-                    this.cameras.main.height / 2,
-                    `¡Oleada ${oleada}!`,
-                    { fontSize: '48px', fill: '#ff0000' }
-                ).setOrigin(0.5);
-
-                this.tweens.add({
-                    targets: anuncio,
-                    alpha: 0,
-                    duration: 3000,
-                    onComplete: () => anuncio.destroy()
-                });
+            this.tweens.add({
+                targets: anuncio,
+                alpha: 0,
+                duration: 3000,
+                onComplete: () => anuncio.destroy()
             });
 
-            onEnemigosRestantes((cantidad) => {
+            // Actualizar texto de oleada
+            this.oleadaText.setText(`Oleada: ${oleada}`);
+        });
+
+        // Escuchar eventos de enemigos restantes
+        onEnemigosRestantes((cantidad) => {
+            if (this.enemigosText) {
                 this.enemigosText.setText(`Enemigos: ${cantidad}`);
-            });
+            }
+        });
 
-            onTemporizadorOleada((segundos) => {
+        // Escuchar eventos de temporizador
+        onTemporizadorOleada((segundos) => {
+            if (this.temporizadorText) {
                 if (segundos > 0) {
                     this.temporizadorText.setText(`Siguiente oleada: ${segundos}s`);
                     this.temporizadorText.setVisible(true);
                 } else {
                     this.temporizadorText.setVisible(false);
                 }
-            });
+            }
         });
     }
 

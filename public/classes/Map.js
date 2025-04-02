@@ -1,55 +1,61 @@
 export default class Map {
     constructor(scene) {
         this.scene = scene; // Referencia a la escena de Phaser
-        this.tileSize = 60; // Tamaño de cada casilla
+        this.baseTileSize = 60; // Tamaño base fijo de cada casilla
         this.map = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 4, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 4, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
         ];
-        // Calcular el tamaño de las casillas basado en el ancho del dispositivo
-        this.calculateTileSize();
+
+        // Calcular dimensiones totales del mapa
+        this.mapWidth = this.map[0].length;
+        this.mapHeight = this.map.length;
+
+        // Calcular el tamaño de las casillas y la posición basado en el ancho del dispositivo
+        this.calculateMapDimensions();
 
         // Escuchar el evento de cambio de tamaño de pantalla
         this.scene.scale.on('resize', this.handleResize, this);
     }
 
-    // Método para calcular el tamaño de las casillas
-    calculateTileSize() {
+    // Método para calcular dimensiones del mapa
+    calculateMapDimensions() {
         const gameWidth = this.scene.scale.width;
-        const mapWidth = this.map[0].length; // Ancho del mapa en casillas
+        const gameHeight = this.scene.scale.height;
 
-        // Calcular el tamaño máximo que pueden tener las casillas para que el mapa quepa en pantalla
-        // Podemos restar un margen si es necesario (por ejemplo, 20px)
-        const margin = 20;
-        const maxTileSize = Math.floor((gameWidth - margin) / mapWidth);
+        // Calcular el factor de escala para que el mapa completo quepa en la pantalla
+        // Dejamos un margen del 5% en cada lado
+        const scaleX = (gameWidth * 0.9) / (this.mapWidth * this.baseTileSize);
+        const scaleY = (gameHeight * 0.9) / (this.mapHeight * this.baseTileSize);
 
-        // Establecer un tamaño mínimo para que las casillas no sean demasiado pequeñas
-        const minTileSize = 30;
+        // Usar el factor de escala más pequeño para mantener la proporción
+        this.scale = Math.min(scaleX, scaleY);
 
-        // Usar el valor calculado o el mínimo, el que sea mayor
-        this.tileSize = Math.max(maxTileSize, minTileSize);
+        // Calcular el tamaño de casilla escalado
+        this.tileSize = this.baseTileSize * this.scale;
+
+        // Calcular las coordenadas de inicio para centrar el mapa
+        this.offsetX = (gameWidth - (this.mapWidth * this.tileSize)) / 2;
+        this.offsetY = (gameHeight - (this.mapHeight * this.tileSize)) / 2;
     }
 
     // Manejar el redimensionamiento de la pantalla
-    handleResize(gameSize) {
-        // Recalcular el tamaño de las casillas
-        this.calculateTileSize();
-
-        // Volver a crear el mapa con el nuevo tamaño
+    handleResize() {
+        this.calculateMapDimensions();
         this.create();
     }
 
@@ -57,6 +63,7 @@ export default class Map {
     create() {
         // Limpiar el mapa existente si lo hay
         this.clearMap();
+
         for (let row = 0; row < this.map.length; row++) {
             for (let col = 0; col < this.map[row].length; col++) {
                 let texture;
@@ -76,9 +83,50 @@ export default class Map {
                     default:
                         texture = 'grass'; // Casillas con decoraciones siguen mostrando grass
                 }
-                this.scene.add.image(col * this.tileSize, row * this.tileSize, texture)
+
+                // Calcular la posición con el offset para centrar el mapa
+                const x = this.offsetX + (col * this.tileSize);
+                const y = this.offsetY + (row * this.tileSize);
+
+                const tile = this.scene.add.image(x, y, texture)
                     .setOrigin(0, 0)
                     .setDisplaySize(this.tileSize, this.tileSize);
+
+                // Si es grass, hacer interactivo
+                if (this.map[row][col] === 1) {
+                    tile.setInteractive();
+                    // Guardar referencia a fila y columna para usar en el evento
+                    tile.row = row;
+                    tile.col = col;
+
+                    tile.on('pointerdown', () => {
+                        const towerCost = 20; // Costo de cada torre
+                        if (this.scene.currencyManager.canAfford(towerCost)) {
+                            if (this.scene.tower.placeTower(col, row)) {
+                                this.scene.currencyManager.spend(towerCost);
+                                this.scene.colocarTorre(col, row, 'tower'); // Notificar al servidor
+                                // Notificar al servidor del gasto
+                                this.scene.gastarMonedas(towerCost);
+                            }
+                        } else {
+                            // Mostrar feedback de que no hay suficientes monedas
+                            const feedback = this.scene.add.text(
+                                x + this.tileSize / 2,
+                                y - 20,
+                                '¡No hay suficientes monedas!',
+                                { fontSize: '16px', fill: '#ff0000' }
+                            ).setOrigin(0.5);
+
+                            this.scene.tweens.add({
+                                targets: feedback,
+                                y: feedback.y - 30,
+                                alpha: 0,
+                                duration: 1000,
+                                onComplete: () => feedback.destroy()
+                            });
+                        }
+                    });
+                }
             }
         }
     }
@@ -95,12 +143,19 @@ export default class Map {
         }
     }
 
+    // Método para obtener la posición en pantalla de una casilla
+    getTilePosition(row, col) {
+        return {
+            x: this.offsetX + (col * this.tileSize) + (this.tileSize / 2),
+            y: this.offsetY + (row * this.tileSize) + (this.tileSize / 2)
+        };
+    }
+
     // Método para generar la ruta de los enemigos
     createPath() {
         const path = [];
         const rows = this.map.length;
         const cols = this.map[0].length;
-        const tileSize = this.tileSize;
 
         // Encontrar el punto de inicio (primera casilla de tipo 0)
         let startRow = -1;
@@ -126,8 +181,11 @@ export default class Map {
         let previousCol = -1;
 
         while (true) {
-            // Agregar la posición actual a la ruta
-            path.push({ x: currentCol * tileSize + tileSize / 2, y: currentRow * tileSize + tileSize / 2 });
+            // Obtener posición en pantalla para este punto
+            const position = this.getTilePosition(currentRow, currentCol);
+
+            // Agregar la posición a la ruta
+            path.push({ x: position.x, y: position.y });
 
             // Verificar si llegamos a la base (casilla de tipo 2)
             if (this.map[currentRow][currentCol] === 2) break;
