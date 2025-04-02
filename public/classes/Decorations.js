@@ -54,4 +54,36 @@ export default class Decorations {
         // Marcar la casilla como no disponible para torres
         this.map.setTileValue(row, col, 6); // 6 representa una casilla con un arbusto
     }
+
+    addGuard(row, col) {
+        // Obtener la posición en la pantalla para esta casilla
+        const position = this.map.getTilePosition(row, col);
+
+        const bush = this.scene.add.image(
+            position.x,
+            position.y,
+            'guardia'
+        );
+        bush.setOrigin(0.5, 0.5);
+        bush.setDisplaySize(this.map.tileSize, this.map.tileSize);
+
+        // Marcar la casilla como no disponible para torres
+        this.map.setTileValue(row, col, 7);
+    }
+
+    addGuard2(row, col) {
+        // Obtener la posición en la pantalla para esta casilla
+        const position = this.map.getTilePosition(row, col);
+
+        const bush = this.scene.add.image(
+            position.x,
+            position.y,
+            'guardia2'
+        );
+        bush.setOrigin(0.5, 0.5);
+        bush.setDisplaySize(this.map.tileSize, this.map.tileSize);
+
+        // Marcar la casilla como no disponible para torres
+        this.map.setTileValue(row, col, 8);
+    }
 }
