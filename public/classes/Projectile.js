@@ -5,6 +5,7 @@ export default class Projectile {
         this.y = y;         // Posición inicial Y
         this.target = target; // Referencia al enemigo objetivo
         this.speed = 5 * scene.map.scale; // Velocidad ajustada a la escala
+        this.damage = 1;    // Cantidad de daño que aplica
 
         // Crear el sprite del proyectil
         this.sprite = this.scene.add.sprite(x, y, 'projectile')
@@ -30,8 +31,8 @@ export default class Projectile {
             this.sprite.y += (dy / distance) * this.speed;
         } else {
             // El proyectil alcanzó al objetivo
-            this.target.destroy(); // Destruir el enemigo
-            this.destroy();        // Destruir el proyectil
+            const enemyDied = this.target.takeDamage(this.damage); // Aplicar daño
+            this.destroy(); // Destruir el proyectil
         }
     }
 

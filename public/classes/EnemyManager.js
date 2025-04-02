@@ -21,7 +21,23 @@ export default class EnemyManager {
             const { id, x, y, currentPoint } = data;
             const enemy = this.enemies.find(e => e.id === id);
             if (enemy) {
-                enemy.updatePosition(x, y, currentPoint);
+                // Usar las coordenadas exactas enviadas por el servidor, ajustadas por el offset y escala
+                const worldX = this.map.offsetX + (x * this.map.scale);
+                const worldY = this.map.offsetY + (y * this.map.scale);
+                enemy.sprite.x = worldX;
+                enemy.sprite.y = worldY;
+
+                // Actualizar barras de vida
+                if (enemy.healthBar) {
+                    enemy.healthBar.x = worldX;
+                    enemy.healthBar.y = worldY - this.scene.map.tileSize / 2 - 5;
+                }
+                if (enemy.healthBarBackground) {
+                    enemy.healthBarBackground.x = worldX;
+                    enemy.healthBarBackground.y = worldY - this.scene.map.tileSize / 2 - 5;
+                }
+
+                enemy.currentPoint = currentPoint;
             }
         });
 
@@ -33,20 +49,20 @@ export default class EnemyManager {
     }
 
     addEnemy(enemigo) {
-        const path = this.map.createPath(); // Obtener la ruta del cliente
+        const path = this.map.createPath(); // Usar createPath() de Map
         const enemy = new Enemy(this.scene, path, enemigo.id);
-
         // Guardar información de oleada si existe
         if (enemigo.oleada) {
             enemy.oleada = enemigo.oleada;
         }
-
         // Si el servidor proporciona una posición inicial, usarla
-        if (enemigo.x !== undefined && enemigo.y !== undefined) {
+        if (enemigo.x && enemigo.y) {
             enemy.sprite.x = enemigo.x;
             enemy.sprite.y = enemigo.y;
         }
-
+        if (enemigo.currentPoint) {
+            enemy.currentPoint = enemigo.currentPoint;
+        }
         this.enemies.push(enemy);
     }
 

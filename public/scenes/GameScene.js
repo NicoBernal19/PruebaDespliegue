@@ -34,6 +34,12 @@ export default class GameScene extends Phaser.Scene {
         this.colocarTorre = colocarTorre;
         this.gastarMonedas = gastarMonedas;
 
+        // Hacer accesible la función para eliminar enemigos
+        this.eliminarEnemigo = (enemigoId) => {
+            // Notificar al servidor cuando un enemigo es eliminado
+            onEnemigoEliminado(enemigoId);
+        };
+
         // Añadir imagen de fondo
         const background = this.add.image(0, 0, 'fondoguerra')
             .setOrigin(0, 0)
@@ -71,6 +77,7 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addTree(2, 2);
         this.decorations.addTree(3, 1);
         this.decorations.addTree(3, 2);
+
         // Añadir bosque en la parte inferior derecha
         this.decorations.addTree(9, 26);
         this.decorations.addTree(9, 27);
@@ -98,6 +105,7 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addTree(13, 26);
         this.decorations.addTree(13, 27);
         this.decorations.addTree(13, 28);
+
         // Añadir grupos de casas
         // Grupo 1 - cerca del centro
         this.decorations.addBush(4, 16);
@@ -112,6 +120,7 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addBush(6, 18);
         this.decorations.addBush(7, 16);
         this.decorations.addBush(7, 17);
+
         // Grupo 2 - lado izquierdo
         this.decorations.addBush(10, 2);
         this.decorations.addBush(10, 3);
@@ -125,9 +134,10 @@ export default class GameScene extends Phaser.Scene {
         this.decorations.addBush(12, 4);
         this.decorations.addBush(13, 2);
         this.decorations.addBush(13, 3);
-        //Guardias
-        this.decorations.addGuard(15,22);
-        this.decorations.addGuard2(15,24);
+
+        // Añadir guardias
+        this.decorations.addGuard(15, 22);
+        this.decorations.addGuard2(15, 24);
 
         // Escuchar actualizaciones de monedas desde el servidor
         onActualizarMonedas((amount) => {
