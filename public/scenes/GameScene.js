@@ -55,6 +55,40 @@ export default class GameScene extends Phaser.Scene {
         this.map = new Map(this);
         this.map.create();
 
+        // Añadir sistema de vida para el castillo
+        this.castleHealth = 100; // Vida inicial
+        this.castleMaxHealth = 100;
+
+        // Crear contenedor para la barra de vida del castillo
+        this.castleHealthContainer = this.add.container(this.cameras.main.width - 200, 110).setScrollFactor(0);
+
+        // Fondo de la barra de vida
+        this.castleHealthBackground = this.add.rectangle(0, 0, 150, 20, 0x000000, 0.7);
+        this.castleHealthBar = this.add.rectangle(0, 0, 150, 20, 0x00FF00, 1);
+        this.castleHealthBar.setOrigin(0, 0.5);
+        this.castleHealthBar.x = -75; // Centrar la barra
+
+        // Texto de la vida del castillo
+        this.castleHealthText = this.add.text(0, 0, `${this.castleHealth}/${this.castleMaxHealth}`, {
+            fontSize: '16px',
+            fill: '#FFFFFF'
+        }).setOrigin(0.5);
+
+        // Añadir elementos al contenedor
+        this.castleHealthContainer.add([
+            this.castleHealthBackground,
+            this.castleHealthBar,
+            this.castleHealthText
+        ]);
+
+        // Etiqueta para la barra de vida
+        this.castleHealthLabel = this.add.text(this.cameras.main.width - 200, 85, 'Vida del Castillo:', {
+            fontSize: '18px',
+            fill: '#FFFFFF',
+            backgroundColor: '#000000',
+            padding: { x: 5, y: 3 }
+        }).setOrigin(0.5, 0.5).setScrollFactor(0);
+
         // Crear el sistema de torres
         this.tower = new Tower(this, this.map);
 
@@ -241,6 +275,92 @@ export default class GameScene extends Phaser.Scene {
                 }
             }
         });
+    }
+
+    // Método para dañar el castillo
+    damageCastle(amount) {
+        this.castleHealth = Math.max(0, this.castleHealth - amount);
+
+        // Actualizar barra de vida
+        const healthPercent = this.castleHealth / this.castleMaxHealth;
+        this.castleHealthBar.width = 150 * healthPercent;
+        this.castleHealthText.setText(`${this.castleHealth}/${this.castleMaxHealth}`);
+
+        // Cambiar color según vida restante
+        if (healthPercent <= 0.25) {
+            this.castleHealthBar.fillColor = 0xFF0000; // Rojo para poca vida
+        } else if (healthPercent <= 0.5) {
+            this.castleHealthBar.fillColor = 0xFFFF00; // Amarillo para vida media
+        }
+
+        // Efecto visual cuando recibe daño
+        this.cameras.main.shake(250, 0.005);
+
+        // Verificar si el castillo ha sido destruido
+        if (this.castleHealth <= 0) {
+            this.gameOver(false); // Pasar false indica derrota
+        }
+    }
+
+    // Método para game over
+    gameOver(victory) {
+        // Detener actualizaciones del juego
+        this.scene.pause();
+
+        // Oscurecer el fondo
+        const overlay = this.add.rectangle(
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2,
+            this.cameras.main.width,
+            this.cameras.main.height,
+            0x000000,
+            0.7
+        ).setScrollFactor(0);
+
+        // Mostrar mensaje de victoria o derrota
+        const message = victory ? '¡Victoria!' : '¡Derrota!';
+        const color = victory ? '#00FF00' : '#FF0000';
+
+        const gameOverText = this.add.text(
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2 - 50,
+            message,
+            {
+                fontSize: '48px',
+                fill: color,
+                stroke: '#000000',
+                strokeThickness: 6
+            }
+        ).setOrigin(0.5).setScrollFactor(0);
+
+        // Añadir botón para volver al menú
+        const buttonWidth = 200;
+        const buttonHeight = 50;
+        const buttonX = this.cameras.main.width / 2 - buttonWidth / 2;
+        const buttonY = this.cameras.main.height / 2 + 50 - buttonHeight / 2;
+
+        const button = this.add.graphics();
+        button.fillStyle(0xA67C52, 1);
+        button.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+        button.lineStyle(3, 0x664433, 1);
+        button.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+        const buttonText = this.add.text(
+            this.cameras.main.width / 2,
+            this.cameras.main.height / 2 + 50,
+            'Volver al Menú',
+            {
+                fontSize: '24px',
+                fill: '#FFFFFF'
+            }
+        ).setOrigin(0.5).setScrollFactor(0);
+
+        // Hacer el botón interactivo
+        const hitArea = new Phaser.Geom.Rectangle(buttonX, buttonY, buttonWidth, buttonHeight);
+        button.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
+            .on('pointerdown', () => {
+                this.scene.start('MenuScene');
+            });
     }
 
     update() {

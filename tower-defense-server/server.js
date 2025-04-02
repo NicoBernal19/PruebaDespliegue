@@ -24,9 +24,10 @@ const rooms = {};
 
 // Configuración de oleadas (compartida por todas las salas)
 const oleadasConfig = [
-    { cantidad: 5, delay: 2000, espera: 10000 },
-    { cantidad: 10, delay: 1500, espera: 15000 },
-    { cantidad: 15, delay: 1000, espera: 20000 }
+    { cantidad: 10, delay: 2000, espera: 10000 },
+    { cantidad: 15, delay: 2000, espera: 15000 },
+    { cantidad: 20, delay: 2000, espera: 20000 },
+    { cantidad: 30, delay: 2000, espera: 15000 },
 ];
 
 // Función para inicializar el estado del juego para una sala

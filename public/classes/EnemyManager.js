@@ -43,8 +43,11 @@ export default class EnemyManager {
 
         // Escuchar cuando un enemigo llega a la base
         onEnemyReachedBase((enemyId) => {
+            // Dañar el castillo antes de eliminar el enemigo
+            if (this.scene.damageCastle) {
+                this.scene.damageCastle(2); // Restar 2 de vida
+            }
             this.removeEnemy(enemyId);
-            // Aquí podrías añadir lógica para reducir vidas o puntos
         });
     }
 
